@@ -12,14 +12,13 @@ import os
 
 
 def classification(train, opt, validation, num_clases):
-        # baseClassifiers_list = ["weka.classifiers.bayes.NaiveBayes", "weka.classifiers.functions.MultilayerPerceptron",
-        #                     "weka.classifiers.functions.SMO","weka.classifiers.lazy.IBk", "weka.classifiers.lazy.KStar", "weka.classifiers.meta.AdaBoostM1",
-        #                     "weka.classifiers.meta.Bagging", "weka.classifiers.meta.LogitBoost", "weka.classifiers.trees.J48", "weka.classifiers.trees.DecisionStump",
-        #                     "weka.classifiers.trees.LMT", "weka.classifiers.trees.RandomForest", "weka.classifiers.trees.REPTree", "weka.classifiers.rules.PART",
-        #                     "weka.classifiers.rules.JRip", "weka.classifiers.functions.Logistic", "weka.classifiers.meta.ClassificationViaRegression",
-        #                     "weka.classifiers.bayes.BayesNet"]
-        baseClassifiers_list = [
+        baseClassifiers_list = ["weka.classifiers.bayes.NaiveBayes", "weka.classifiers.functions.MultilayerPerceptron",
+                            "weka.classifiers.functions.SMO","weka.classifiers.lazy.IBk", "weka.classifiers.lazy.KStar", "weka.classifiers.meta.AdaBoostM1",
+                            "weka.classifiers.meta.Bagging", "weka.classifiers.meta.LogitBoost", "weka.classifiers.trees.J48", "weka.classifiers.trees.DecisionStump",
+                            "weka.classifiers.trees.LMT", "weka.classifiers.trees.RandomForest", "weka.classifiers.trees.REPTree", "weka.classifiers.rules.PART",
+                            "weka.classifiers.rules.JRip", "weka.classifiers.functions.Logistic", "weka.classifiers.meta.ClassificationViaRegression",
                             "weka.classifiers.bayes.BayesNet"]
+
         results_train = pd.DataFrame()
         results_opt = pd.DataFrame()
         results_validation = pd.DataFrame()
@@ -206,7 +205,7 @@ def main():
 if __name__ == "__main__":
     try:
         start_time = time.time()
-        jvm.start(max_heap_size="2048m")
+        jvm.start(max_heap_size="4096m")
         main()
         print("--- %s seconds ---" % (time.time() - start_time))
     except Exception:

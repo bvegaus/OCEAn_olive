@@ -156,7 +156,9 @@ def get_predictions(chromosome, C):
 def evaluate(y_true, y_pred):
     mae = mean_absolute_error(y_true, y_pred)
     mze = 1 - accuracy_score(y_true, y_pred)
-    return mae, mze
+    acc = accuracy_score(y_true, y_pred)
+
+    return mae, mze, acc
 
     
 
@@ -196,21 +198,22 @@ def main():
     sel_press = 2
     mu_press = 0.4
     semilla = [1]
-    dataset_name = 'car' # an input parameter between [1-5] which indicate the random partition
     for i in range(5):
         opt = np.str(i+5)
         validation = np.str(i + 10)
 
-        C_opt = pd.read_csv('./predictions/'+dataset_name+'/'+opt+ '.csv')
+        C_opt = pd.read_csv('./predictions/'+opt+ '.csv', sep = ';').astype('float')
         l_opt = C_opt.real
         C_opt = C_opt.drop(['real', 'Unnamed: 0'], axis = 1)
 
-        C_validation = pd.read_csv('./predictions/'+dataset_name+'/'+validation+ '.csv')
+        C_validation = pd.read_csv('./predictions/'+validation+ '.csv', sep = ';').astype('float')
         l_validation = C_validation.real
         C_validation = C_validation.drop(['real', 'Unnamed: 0'], axis = 1)
 
+
         MAE = []
         MZE = []
+        ACC = []
         for s in semilla:
             print("Semilla", s)
             best_cromosome = genetic_algorithm(N, t, s, C_opt, l_opt, G, sel_press, mu_press)
@@ -220,19 +223,18 @@ def main():
             print(y_true)
             y_pred = get_predictions(best_cromosome, C_validation)
             print(y_pred)
-            #aux_matrix = confusion_matrix(y_true, y_pred)
-            print(confusion_matrix(y_true, y_pred))
-            #conf_matrix = conf_matrix + confusion_matrix(y_true, y_pred)
-            #print(conf_matrix)
-            mae, mze = evaluate(y_true, y_pred)
+            mae, mze, acc = evaluate(y_true, y_pred)
             MAE.append(mae)
             MZE.append(mze)
+            ACC.append(acc)
             print("\n")
 
         print("MAE mean:    ", np.mean(MAE))
 
         print("MZE mean:    ", np.mean(MZE))
-    #print(conf_matrix)
+
+        print("ACC mean:    ", np.mean(ACC))
+
 
         
                              
