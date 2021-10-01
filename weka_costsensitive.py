@@ -12,14 +12,13 @@ import os
 
 
 def classification(train, opt, validation, num_clases):
-        # baseClassifiers_list = ["weka.classifiers.bayes.NaiveBayes", "weka.classifiers.functions.MultilayerPerceptron",
-        #                     "weka.classifiers.functions.SMO","weka.classifiers.lazy.IBk", "weka.classifiers.lazy.KStar", "weka.classifiers.meta.AdaBoostM1",
-        #                     "weka.classifiers.meta.Bagging", "weka.classifiers.meta.LogitBoost", "weka.classifiers.trees.J48", "weka.classifiers.trees.DecisionStump",
-        #                     "weka.classifiers.trees.LMT", "weka.classifiers.trees.RandomForest", "weka.classifiers.trees.REPTree", "weka.classifiers.rules.PART",
-        #                     "weka.classifiers.rules.JRip", "weka.classifiers.functions.Logistic", "weka.classifiers.meta.ClassificationViaRegression",
-        #                     "weka.classifiers.bayes.BayesNet"]
-        baseClassifiers_list = [
-                            "weka.classifiers.bayes.BayesNet"]
+        baseClassifiers_list = ["weka.classifiers.bayes.NaiveBayes", "weka.classifiers.functions.MultilayerPerceptron",
+                            "weka.classifiers.functions.SMO","weka.classifiers.lazy.IBk", "weka.classifiers.lazy.KStar", "weka.classifiers.meta.AdaBoostM1",
+                            "weka.classifiers.meta.Bagging", "weka.classifiers.meta.LogitBoost", "weka.classifiers.trees.J48", "weka.classifiers.trees.DecisionStump",
+                            "weka.classifiers.trees.LMT", "weka.classifiers.trees.RandomForest", "weka.classifiers.trees.REPTree", "weka.classifiers.rules.PART",
+                            "weka.classifiers.rules.JRip", "weka.classifiers.functions.Logistic", "weka.classifiers.meta.ClassificationViaRegression"]#,
+                            #"weka.classifiers.bayes.BayesNet"]
+
         results_train = pd.DataFrame()
         results_opt = pd.DataFrame()
         results_validation = pd.DataFrame()
@@ -132,16 +131,16 @@ def classification(train, opt, validation, num_clases):
 
 def dataset_classifiers(iteration):
 
-    if not os.path.exists('./predictions/'):
-        os.mkdir('./predictions/')
+    if not os.path.exists('./predictions_LOO_nonLOO/'):
+        os.mkdir('./predictions_LOO_nonLOO/')
         
     #load a dataset
     loader = Loader("weka.core.converters.ArffLoader")
-    train = loader.load_file('./data_weka/'+np.str(iteration)+'.arff')
+    train = loader.load_file('./data_weka_LOO_nonLOO/'+np.str(iteration)+'.arff')
     train.class_is_last()
-    opt = loader.load_file('./data_weka/'+np.str(iteration+5)+'.arff')
+    opt = loader.load_file('./data_weka_LOO_nonLOO/'+np.str(iteration+5)+'.arff')
     opt.class_is_last()
-    validation = loader.load_file('./data_weka/val.arff')
+    validation = loader.load_file('./data_weka_LOO_nonLOO/val.arff')
     validation.class_is_last()
     
 
@@ -152,9 +151,9 @@ def dataset_classifiers(iteration):
             
 
 
-    train_name = "./predictions/" +np.str(iteration) +".csv"
-    opt_name = "./predictions/" +np.str(iteration+5)+".csv"
-    validation_name = "./predictions/" +np.str(iteration+10)+".csv"
+    train_name = "./predictions_LOO_nonLOO/" +np.str(iteration) +".csv"
+    opt_name = "./predictions_LOO_nonLOO/" +np.str(iteration+5)+".csv"
+    validation_name = "./predictions_LOO_nonLOO/" +np.str(iteration+10)+".csv"
 
     results_train.to_csv(train_name)
     results_opt.to_csv(opt_name)
@@ -206,7 +205,7 @@ def main():
 if __name__ == "__main__":
     try:
         start_time = time.time()
-        jvm.start(max_heap_size="2048m")
+        jvm.start(max_heap_size="4096m")
         main()
         print("--- %s seconds ---" % (time.time() - start_time))
     except Exception:
